@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:guessing_game/pages/new_room_page/new_room_page.dart';
 
 import './pages/home_page/home_page.dart';
 
@@ -26,6 +27,7 @@ class MyApp extends StatelessWidget {
       initialRoute: '/',
       routes: {
         '/': (_) => HomePage(),
+        NewRoomPage.routeName: (_) => NewRoomPage(),
       },
     );
   }

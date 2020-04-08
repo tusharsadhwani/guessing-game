@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../new_room_page/new_room_page.dart';
 
 class HomePage extends StatelessWidget {
   @override
@@ -30,7 +31,8 @@ class HomePage extends StatelessWidget {
               ),
               SizedBox(height: 20),
               RaisedButton(
-                onPressed: () {},
+                onPressed: () => Navigator.of(context)
+                    .pushReplacementNamed(NewRoomPage.routeName),
                 child: Text(
                   'Start',
                   style: Theme.of(context).textTheme.button,

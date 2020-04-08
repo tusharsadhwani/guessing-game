@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import './pages/HomePage/HomePage.dart';
+
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
@@ -10,18 +12,10 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.red,
       ),
-      home: HomePage(),
-    );
-  }
-}
-
-class HomePage extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.grey.shade900,
-      appBar: AppBar(title: Text("Guessing game")),
-      floatingActionButton: FloatingActionButton(onPressed: () {}),
+      initialRoute: '/',
+      routes: {
+        '/': (_) => HomePage(),
+      },
     );
   }
 }

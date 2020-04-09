@@ -25,27 +25,65 @@ class _NewRoomPageState extends State<NewRoomPage>
       ),
       backgroundColor: Theme.of(context).backgroundColor,
       body: Center(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            TabBar(
-              indicator: BoxDecoration(color: Theme.of(context).primaryColor),
-              controller: tabController,
-              tabs: <Widget>[
-                Tab(text: 'Create'),
-                Tab(text: 'Join'),
-              ],
-            ),
-            Container(
-              height: 300,
-              child: TabBarView(
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              TabBar(
+                indicator: BoxDecoration(color: Theme.of(context).primaryColor),
                 controller: tabController,
-                children: [
-                  Text('hi'),
-                  Icon(Icons.directions_transit),
+                tabs: <Widget>[
+                  Tab(text: 'Create'),
+                  Tab(text: 'Join'),
                 ],
               ),
+              Container(
+                height: 300,
+                child: TabBarView(
+                  controller: tabController,
+                  children: [CreateRoom(), JoinRoom()],
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class CreateRoom extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: Form(
+        child: Column(
+          children: <Widget>[
+            TextFormField(
+              decoration: InputDecoration(labelText: "Your Name"),
             ),
+            RaisedButton(
+              onPressed: () {},
+              child: Text('Create Room'),
+            )
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class JoinRoom extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: Form(
+        child: Column(
+          children: <Widget>[
+            TextFormField(),
+            TextFormField(),
           ],
         ),
       ),

@@ -33,10 +33,7 @@ class HomePage extends StatelessWidget {
               RaisedButton(
                 onPressed: () => Navigator.of(context)
                     .pushReplacementNamed(NewRoomPage.routeName),
-                child: Text(
-                  'Start',
-                  style: Theme.of(context).textTheme.button,
-                ),
+                child: Text('Start'),
               ),
             ],
           ),

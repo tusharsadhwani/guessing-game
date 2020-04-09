@@ -12,10 +12,11 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
+        accentColor: Colors.white,
         backgroundColor: Colors.grey.shade900,
         primarySwatch: Colors.red,
         buttonTheme: ButtonThemeData(
-          buttonColor: Colors.red,
+          textTheme: ButtonTextTheme.accent,
         ),
         textTheme: TextTheme(
           display1: GoogleFonts.montserrat(),

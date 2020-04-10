@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "999174777273",
+    "firebase_url": "https://guessing-game-flutter.firebaseio.com",
+    "project_id": "guessing-game-flutter",
+    "storage_bucket": "guessing-game-flutter.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:999174777273:android:b59ae74e62b76fc9b26e68",
+        "android_client_info": {
+          "package_name": "com.tusharsadhwani.guessing_game"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "999174777273-ufajkhd42c0kbffhjbcepjhsq4feii0s.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCpi2P0vOb6hW7YJkneqR1lHSMfEmvukok"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "999174777273-ufajkhd42c0kbffhjbcepjhsq4feii0s.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

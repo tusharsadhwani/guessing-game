@@ -63,10 +63,11 @@ class CreateRoom extends StatelessWidget {
             TextFormField(
               decoration: InputDecoration(labelText: "Your Name"),
             ),
+            SizedBox(height: 10),
             RaisedButton(
               onPressed: () {},
               child: Text('Create Room'),
-            )
+            ),
           ],
         ),
       ),
@@ -82,8 +83,21 @@ class JoinRoom extends StatelessWidget {
       child: Form(
         child: Column(
           children: <Widget>[
-            TextFormField(),
-            TextFormField(),
+            TextFormField(
+              decoration: InputDecoration(
+                labelText: "Room Code",
+              ),
+            ),
+            TextFormField(
+              decoration: InputDecoration(
+                labelText: "Your Name",
+              ),
+            ),
+            SizedBox(height: 10),
+            RaisedButton(
+              onPressed: () {},
+              child: Text('Join Room'),
+            )
           ],
         ),
       ),

@@ -3,6 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 
 import './pages/home_page/home_page.dart';
 import './pages/new_room_page/new_room_page.dart';
+import './pages/game_page/game_page.dart';
 
 void main() => runApp(MyApp());
 
@@ -30,6 +31,7 @@ class MyApp extends StatelessWidget {
       routes: {
         '/': (_) => HomePage(),
         NewRoomPage.routeName: (_) => NewRoomPage(),
+        GamePage.routeName: (_) => GamePage(),
       },
     );
   }

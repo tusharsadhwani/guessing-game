@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:guessing_game/pages/game_page/game_page.dart';
 
 class NewRoomPage extends StatefulWidget {
   static const routeName = '/newRoom';
@@ -53,6 +55,16 @@ class _NewRoomPageState extends State<NewRoomPage>
 }
 
 class CreateRoom extends StatelessWidget {
+  void createRoom(context) {
+    Firestore.instance
+        .collection('rooms')
+        .add({'admin': 12345, 'members': []})
+        .then((ref) => ref.get())
+        .then((doc) => print(doc.data))
+        .then((_) =>
+            Navigator.of(context).pushReplacementNamed(GamePage.routeName));
+  }
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -65,7 +77,7 @@ class CreateRoom extends StatelessWidget {
             ),
             SizedBox(height: 10),
             RaisedButton(
-              onPressed: () {},
+              onPressed: () => createRoom(context),
               child: Text('Create Room'),
             ),
           ],

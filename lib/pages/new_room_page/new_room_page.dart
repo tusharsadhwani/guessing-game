@@ -25,7 +25,6 @@ class _NewRoomPageState extends State<NewRoomPage>
       appBar: AppBar(
         title: Text("New Room"),
       ),
-      backgroundColor: Theme.of(context).backgroundColor,
       body: Center(
         child: SingleChildScrollView(
           child: Column(

@@ -10,7 +10,6 @@ class HomePage extends StatelessWidget {
       fontSize: 64.0,
     );
     return Scaffold(
-      backgroundColor: Theme.of(context).backgroundColor,
       appBar: AppBar(
         title: Text("Guessing game"),
       ),

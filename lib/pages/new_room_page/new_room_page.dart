@@ -59,9 +59,14 @@ class CreateRoom extends StatelessWidget {
         .collection('rooms')
         .add({'admin': 12345, 'members': []})
         .then((ref) => ref.get())
-        .then((doc) => print(doc.data))
-        .then((_) =>
-            Navigator.of(context).pushReplacementNamed(GamePage.routeName));
+        .then((doc) {
+          print(doc.data);
+          Navigator.of(context).pushReplacement(
+            MaterialPageRoute(
+              builder: (_) => GamePage(doc.documentID),
+            ),
+          );
+        });
   }
 
   @override

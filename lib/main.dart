@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:guessing_game/pages/new_room_page/new_room_page.dart';
 
 import './pages/home_page/home_page.dart';
+import './pages/new_room_page/new_room_page.dart';
 
 void main() => runApp(MyApp());
 

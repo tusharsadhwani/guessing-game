@@ -73,9 +73,12 @@ class _CreateRoomState extends State<CreateRoom> {
       'name': adminName,
       'id': adminId,
     };
+    final roomId = generateRoomId();
+
     Firestore.instance
         .collection('rooms')
         .add({
+          'id': roomId,
           'admin': admin,
           'members': [admin],
         })
@@ -118,8 +121,6 @@ class _CreateRoomState extends State<CreateRoom> {
       ),
     );
   }
-
-  generateUserId() => Random().nextInt(100000);
 }
 
 class JoinRoom extends StatefulWidget {
@@ -158,3 +159,6 @@ class _JoinRoomState extends State<JoinRoom> {
     );
   }
 }
+
+int generateUserId() => Random().nextInt(100000);
+int generateRoomId() => Random().nextInt(100000000);

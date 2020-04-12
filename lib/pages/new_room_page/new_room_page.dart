@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:guessing_game/pages/game_page/game_page.dart';
@@ -53,11 +55,30 @@ class _NewRoomPageState extends State<NewRoomPage>
   }
 }
 
-class CreateRoom extends StatelessWidget {
+class CreateRoom extends StatefulWidget {
+  @override
+  _CreateRoomState createState() => _CreateRoomState();
+}
+
+class _CreateRoomState extends State<CreateRoom> {
+  final createRoomForm = GlobalKey<FormState>();
+  String adminName;
+
   void createRoom(context) {
+    if (!createRoomForm.currentState.validate()) return;
+
+    createRoomForm.currentState.save();
+    final adminId = generateUserId();
+    final admin = {
+      'name': adminName,
+      'id': adminId,
+    };
     Firestore.instance
         .collection('rooms')
-        .add({'admin': 12345, 'members': []})
+        .add({
+          'admin': admin,
+          'members': [admin],
+        })
         .then((ref) => ref.get())
         .then((doc) {
           print(doc.data);
@@ -74,10 +95,18 @@ class CreateRoom extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(16.0),
       child: Form(
+        key: createRoomForm,
         child: Column(
           children: <Widget>[
             TextFormField(
               decoration: InputDecoration(labelText: "Your Name"),
+              validator: (value) {
+                if (value.length == 0) return "Enter your name";
+                return null;
+              },
+              onSaved: (value) {
+                adminName = value;
+              },
             ),
             SizedBox(height: 10),
             RaisedButton(
@@ -89,9 +118,18 @@ class CreateRoom extends StatelessWidget {
       ),
     );
   }
+
+  generateUserId() => Random().nextInt(100000);
 }
 
-class JoinRoom extends StatelessWidget {
+class JoinRoom extends StatefulWidget {
+  @override
+  _JoinRoomState createState() => _JoinRoomState();
+}
+
+class _JoinRoomState extends State<JoinRoom> {
+  var joinRoomForm = GlobalKey<FormState>();
+
   @override
   Widget build(BuildContext context) {
     return Padding(

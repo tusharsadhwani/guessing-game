@@ -29,7 +29,7 @@ class _GamePageState extends State<GamePage> {
       body: FutureBuilder(
         future: getGameData(),
         builder: (ctx, snapshot) => Container(
-          child: Text(snapshot.data.toString() ?? 'loading'),
+          child: Text(snapshot.data?.toString() ?? 'loading'),
         ),
       ),
     );

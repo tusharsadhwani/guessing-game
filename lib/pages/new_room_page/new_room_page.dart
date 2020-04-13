@@ -2,7 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:guessing_game/pages/game_page/game_page.dart';
+import 'package:guessing_game/pages/lobby_page/lobby_page.dart';
 
 class NewRoomPage extends StatefulWidget {
   static const routeName = '/newRoom';
@@ -87,7 +87,7 @@ class _CreateRoomState extends State<CreateRoom> {
           print(doc.data);
           Navigator.of(context).pushReplacement(
             MaterialPageRoute(
-              builder: (_) => GamePage(doc.documentID),
+              builder: (_) => LobbyPage(doc.documentID),
             ),
           );
         });
@@ -168,7 +168,7 @@ class _JoinRoomState extends State<JoinRoom> {
 
           Navigator.of(context).pushReplacement(
             MaterialPageRoute(
-              builder: (_) => GamePage(roomId),
+              builder: (_) => LobbyPage(roomId),
             ),
           );
         }

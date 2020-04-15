@@ -11,38 +11,41 @@ class LobbyPage extends StatefulWidget {
 }
 
 class _LobbyPageState extends State<LobbyPage> {
-  Future getGameData() async {
-    var snapshot = await Firestore.instance
-        .collection('rooms')
-        .document(widget.roomID)
-        .get();
-
-    return snapshot.data;
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text("Lobby"),
       ),
-      body: FutureBuilder(
-          future: getGameData(),
-          builder: (_, snapshot) {
-            if (snapshot.hasData) {
-              final members =
-                  ((snapshot.data as Map<String, dynamic>)['members'] as List);
-
-              return ListView.builder(
-                itemBuilder: (_, idx) => ListTile(
-                  title: Text(members[idx]['name']),
-                ),
-                itemCount: members.length,
+      body: StreamBuilder<DocumentSnapshot>(
+        stream: Firestore.instance
+            .collection('rooms')
+            .document(widget.roomID)
+            .snapshots(),
+        builder:
+            (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+          if (snapshot.hasError) return new Text('Error: ${snapshot.error}');
+          switch (snapshot.connectionState) {
+            case ConnectionState.waiting:
+              return new Text('Loading...');
+            default:
+              final members = (snapshot.data.data['members'] as List);
+              return Column(
+                children: [
+                  Expanded(
+                    child: ListView.builder(
+                      itemBuilder: (_, idx) => ListTile(
+                        title: Text(members[idx]['name']),
+                      ),
+                      itemCount: members.length,
+                    ),
+                  ),
+                  RaisedButton(child: Text("Start Game"), onPressed: () {})
+                ],
               );
-            } else {
-              return Text('loading');
-            }
-          }),
+          }
+        },
+      ),
     );
   }
 }

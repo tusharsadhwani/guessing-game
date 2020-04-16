@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
+import '../game_screen/game_screen.dart';
+
 class LobbyPage extends StatefulWidget {
   static const routeName = '/game';
   final roomID;
@@ -40,7 +42,14 @@ class _LobbyPageState extends State<LobbyPage> {
                       itemCount: members.length,
                     ),
                   ),
-                  RaisedButton(child: Text("Start Game"), onPressed: () {})
+                  RaisedButton(
+                    child: Text("Start Game"),
+                    onPressed: () => Navigator.of(context).pushReplacement(
+                      MaterialPageRoute(
+                        builder: (_) => GameScreen(),
+                      ),
+                    ),
+                  ),
                 ],
               );
           }

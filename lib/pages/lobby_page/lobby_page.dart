@@ -34,10 +34,10 @@ class _LobbyPageState extends State<LobbyPage> {
       body: FutureBuilder<Map<String, dynamic>>(
         future: _loadRoomData(),
         builder: (_, snapshot) {
-          if (snapshot.hasError) return new Text('Error: ${snapshot.error}');
+          if (snapshot.hasError) return Text('Error: ${snapshot.error}');
           switch (snapshot.connectionState) {
             case ConnectionState.waiting:
-              return new Text('Loading...');
+              return Text('Loading...');
             default:
               final int roomCode = snapshot.data['code'];
               final Stream<QuerySnapshot> members = snapshot.data['members'];
@@ -46,10 +46,10 @@ class _LobbyPageState extends State<LobbyPage> {
                 builder: (BuildContext context,
                     AsyncSnapshot<QuerySnapshot> snapshot) {
                   if (snapshot.hasError)
-                    return new Text('Error: ${snapshot.error}');
+                    return Text('Error: ${snapshot.error}');
                   switch (snapshot.connectionState) {
                     case ConnectionState.waiting:
-                      return new Text('Loading...');
+                      return Text('Loading...');
                     default:
                       final List members = snapshot.data.documents;
                       return Column(

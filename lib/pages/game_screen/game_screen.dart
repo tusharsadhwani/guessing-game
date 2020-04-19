@@ -54,25 +54,24 @@ class _GameScreenState extends State<GameScreen> {
                   .snapshots(),
               builder: (BuildContext context,
                   AsyncSnapshot<QuerySnapshot> snapshot) {
-                if (snapshot.hasError)
-                  return new Text('Error: ${snapshot.error}');
+                if (snapshot.hasError) return Text('Error: ${snapshot.error}');
                 switch (snapshot.connectionState) {
                   case ConnectionState.waiting:
-                    return new Text('Loading...');
+                    return Text('Loading...');
                   default:
-                    return new ListView(
+                    return ListView(
                       children: snapshot.data.documents
                           .map((DocumentSnapshot document) {
                         switch (document['msgType']) {
                           case MessageType.TEXT:
-                            return new ListTile(
-                              title: new Text(document['text']),
-                              subtitle: new Text(document['msgType']),
+                            return ListTile(
+                              title: Text(document['text']),
+                              subtitle: Text(document['msgType']),
                             );
                           default:
-                            return new ListTile(
-                              title: new Text(document['name']),
-                              subtitle: new Text(document['msgType']),
+                            return ListTile(
+                              title: Text(document['name']),
+                              subtitle: Text(document['msgType']),
                             );
                         }
                       }).toList(),

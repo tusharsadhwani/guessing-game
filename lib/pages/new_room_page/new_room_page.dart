@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:guessing_game/pages/lobby_page/lobby_page.dart';
 
+import '../../constants/message_type.dart';
+
 class NewRoomPage extends StatefulWidget {
   static const routeName = '/newRoom';
 
@@ -74,7 +76,7 @@ class _CreateRoomState extends State<CreateRoom> {
       'id': adminId,
     };
     final joinMsg = {
-      'msgType': 'ROOM_CREATED',
+      'msgType': MessageType.ROOM_CREATED,
       'id': adminId,
       'name': adminName,
       'timestamp': DateTime.now().millisecondsSinceEpoch,
@@ -160,7 +162,7 @@ class _JoinRoomState extends State<JoinRoom> {
       'id': userId,
     };
     final joinMsg = {
-      'msgType': 'USER_JOINED',
+      'msgType': MessageType.USER_JOINED,
       'id': userId,
       'name': userName,
       'timestamp': DateTime.now().millisecondsSinceEpoch,

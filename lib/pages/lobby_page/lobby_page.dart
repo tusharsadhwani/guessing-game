@@ -4,8 +4,7 @@ import 'package:flutter/material.dart';
 import '../game_screen/game_screen.dart';
 
 class LobbyPage extends StatefulWidget {
-  static const routeName = '/game';
-  final roomID;
+  final String roomID;
   LobbyPage(this.roomID);
 
   @override

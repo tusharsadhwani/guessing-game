@@ -17,7 +17,7 @@ class _GameScreenState extends State<GameScreen> {
         .collection("rooms")
         .document(widget.roomID)
         .get()
-        .then((snapshot) => print(snapshot.data['messages']));
+        .then((snapshot) => print(snapshot.data));
   }
 
   @override

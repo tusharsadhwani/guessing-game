@@ -64,7 +64,7 @@ class _CreateRoomState extends State<CreateRoom> {
   final createRoomForm = GlobalKey<FormState>();
   String adminName;
 
-  void createRoom(context) {
+  void createRoom(context) async {
     if (!createRoomForm.currentState.validate()) return;
 
     createRoomForm.currentState.save();
@@ -73,25 +73,39 @@ class _CreateRoomState extends State<CreateRoom> {
       'name': adminName,
       'id': adminId,
     };
-    final roomId = generateRoomId();
+    final joinMsg = {
+      'msgType': 'ROOM_CREATED',
+      'id': adminId,
+      'name': adminName,
+    };
+    final roomCode = generateRoomCode();
 
-    Firestore.instance
+    final ref = await Firestore.instance.collection('rooms').add(
+      {
+        'code': roomCode,
+        'admin': adminId,
+      },
+    );
+
+    final doc = await ref.get();
+    print(doc.data);
+    await Firestore.instance
         .collection('rooms')
-        .add({
-          'id': roomId,
-          'admin': admin,
-          'members': [admin],
-          'messages': []
-        })
-        .then((ref) => ref.get())
-        .then((doc) {
-          print(doc.data);
-          Navigator.of(context).pushReplacement(
-            MaterialPageRoute(
-              builder: (_) => LobbyPage(doc.documentID),
-            ),
-          );
-        });
+        .document(doc.documentID)
+        .collection('members')
+        .add(admin);
+
+    await Firestore.instance
+        .collection('rooms')
+        .document(doc.documentID)
+        .collection('messages')
+        .add(joinMsg);
+
+    Navigator.of(context).pushReplacement(
+      MaterialPageRoute(
+        builder: (_) => LobbyPage(doc.documentID),
+      ),
+    );
   }
 
   @override
@@ -132,8 +146,8 @@ class JoinRoom extends StatefulWidget {
 class _JoinRoomState extends State<JoinRoom> {
   var joinRoomForm = GlobalKey<FormState>();
   String userName;
-  int roomCode;
   String roomId;
+  int roomCode;
 
   void joinRoom(context) {
     if (!joinRoomForm.currentState.validate()) return;
@@ -152,7 +166,7 @@ class _JoinRoomState extends State<JoinRoom> {
 
     Firestore.instance
         .collection('rooms')
-        .where('id', isEqualTo: roomCode)
+        .where('code', isEqualTo: roomCode)
         .getDocuments()
         .then(
       (snapshot) async {
@@ -160,19 +174,17 @@ class _JoinRoomState extends State<JoinRoom> {
           showAlert(context, "This room doesn't exist");
         } else {
           roomId = snapshot.documents[0].documentID;
-          var roomData = await Firestore.instance
+          await Firestore.instance
               .collection('rooms')
               .document(roomId)
-              .get()
-              .then((snapshot) => snapshot.data);
-
-          (roomData['members'] as List).add(user);
-          (roomData['messages'] as List).add(joinMsg);
+              .collection('members')
+              .add(user);
 
           await Firestore.instance
               .collection('rooms')
               .document(roomId)
-              .setData(roomData);
+              .collection('messages')
+              .add(joinMsg);
 
           Navigator.of(context).pushReplacement(
             MaterialPageRoute(
@@ -198,8 +210,8 @@ class _JoinRoomState extends State<JoinRoom> {
               ),
               validator: (value) {
                 if (value.length == 0) return "Enter room code";
-                var parsedRoomId = int.tryParse(value);
-                if (parsedRoomId == null) return "Room code must be a number";
+                var parsedRoomCode = int.tryParse(value);
+                if (parsedRoomCode == null) return "Room code must be a number";
                 return null;
               },
               onSaved: (value) {
@@ -231,7 +243,7 @@ class _JoinRoomState extends State<JoinRoom> {
 }
 
 int generateUserId() => Random().nextInt(100000);
-int generateRoomId() => Random().nextInt(100000000);
+int generateRoomCode() => Random().nextInt(100000000);
 
 void showAlert(BuildContext context, String s) {
   showDialog(

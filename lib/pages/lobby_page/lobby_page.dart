@@ -45,7 +45,7 @@ class _LobbyPageState extends State<LobbyPage> {
                     child: Text("Start Game"),
                     onPressed: () => Navigator.of(context).pushReplacement(
                       MaterialPageRoute(
-                        builder: (_) => GameScreen(),
+                        builder: (_) => GameScreen(widget.roomID),
                       ),
                     ),
                   ),

@@ -81,6 +81,7 @@ class _CreateRoomState extends State<CreateRoom> {
           'id': roomId,
           'admin': admin,
           'members': [admin],
+          'messages': []
         })
         .then((ref) => ref.get())
         .then((doc) {
@@ -143,6 +144,12 @@ class _JoinRoomState extends State<JoinRoom> {
       'name': userName,
       'id': userId,
     };
+    final joinMsg = {
+      'msgType': 'USER_JOINED',
+      'id': userId,
+      'name': userName,
+    };
+
     Firestore.instance
         .collection('rooms')
         .where('id', isEqualTo: roomCode)
@@ -160,6 +167,7 @@ class _JoinRoomState extends State<JoinRoom> {
               .then((snapshot) => snapshot.data);
 
           (roomData['members'] as List).add(user);
+          (roomData['messages'] as List).add(joinMsg);
 
           await Firestore.instance
               .collection('rooms')

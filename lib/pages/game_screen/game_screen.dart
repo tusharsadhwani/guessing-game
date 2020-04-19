@@ -10,23 +10,6 @@ class GameScreen extends StatefulWidget {
 }
 
 class _GameScreenState extends State<GameScreen> {
-  var messages = [];
-
-  void _loadMessages() {
-    Firestore.instance
-        .collection("rooms")
-        .document(widget.roomID)
-        .get()
-        .then((snapshot) => print(snapshot.data));
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    print("initState");
-    _loadMessages();
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -35,7 +18,34 @@ class _GameScreenState extends State<GameScreen> {
       ),
       body: Column(
         children: <Widget>[
-          Expanded(child: ListView()),
+          Expanded(
+            child: StreamBuilder<QuerySnapshot>(
+              stream: Firestore.instance
+                  .collection('rooms')
+                  .document(widget.roomID)
+                  .collection('messages')
+                  .snapshots(),
+              builder: (BuildContext context,
+                  AsyncSnapshot<QuerySnapshot> snapshot) {
+                if (snapshot.hasError)
+                  return new Text('Error: ${snapshot.error}');
+                switch (snapshot.connectionState) {
+                  case ConnectionState.waiting:
+                    return new Text('Loading...');
+                  default:
+                    return new ListView(
+                      children: snapshot.data.documents
+                          .map((DocumentSnapshot document) {
+                        return new ListTile(
+                          title: new Text(document['name']),
+                          subtitle: new Text(document['msgType']),
+                        );
+                      }).toList(),
+                    );
+                }
+              },
+            ),
+          ),
           Container(
             padding: const EdgeInsets.all(8.0),
             color: Colors.black.withAlpha(60),

@@ -92,7 +92,8 @@ class _CreateRoomState extends State<CreateRoom> {
 
     final doc = await ref.get();
     print(doc.data);
-    await Firestore.instance
+
+    final newMember = await Firestore.instance
         .collection('rooms')
         .document(doc.documentID)
         .collection('members')
@@ -106,7 +107,7 @@ class _CreateRoomState extends State<CreateRoom> {
 
     Navigator.of(context).pushReplacement(
       MaterialPageRoute(
-        builder: (_) => LobbyPage(doc.documentID),
+        builder: (_) => LobbyPage(doc.documentID, newMember.documentID),
       ),
     );
   }
@@ -178,7 +179,7 @@ class _JoinRoomState extends State<JoinRoom> {
           showAlert(context, "This room doesn't exist");
         } else {
           roomId = snapshot.documents[0].documentID;
-          await Firestore.instance
+          final newMember = await Firestore.instance
               .collection('rooms')
               .document(roomId)
               .collection('members')
@@ -192,7 +193,7 @@ class _JoinRoomState extends State<JoinRoom> {
 
           Navigator.of(context).pushReplacement(
             MaterialPageRoute(
-              builder: (_) => LobbyPage(roomId),
+              builder: (_) => LobbyPage(roomId, newMember.documentID),
             ),
           );
         }

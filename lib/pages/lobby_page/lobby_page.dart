@@ -4,8 +4,9 @@ import 'package:flutter/material.dart';
 import '../game_screen/game_screen.dart';
 
 class LobbyPage extends StatefulWidget {
-  final String roomID;
-  LobbyPage(this.roomID);
+  final String roomId;
+  final String memberId;
+  LobbyPage(this.roomId, this.memberId);
 
   @override
   _LobbyPageState createState() => _LobbyPageState();
@@ -15,7 +16,7 @@ class _LobbyPageState extends State<LobbyPage> {
   Future<Map<String, dynamic>> _loadRoomData() async {
     final DocumentSnapshot doc = await Firestore.instance
         .collection('rooms')
-        .document(widget.roomID)
+        .document(widget.roomId)
         .get();
     final Stream<QuerySnapshot> members = Firestore.instance
         .collection("rooms")
@@ -70,7 +71,8 @@ class _LobbyPageState extends State<LobbyPage> {
                             onPressed: () =>
                                 Navigator.of(context).pushReplacement(
                               MaterialPageRoute(
-                                builder: (_) => GameScreen(widget.roomID),
+                                builder: (_) =>
+                                    GameScreen(widget.roomId, widget.memberId),
                               ),
                             ),
                           ),

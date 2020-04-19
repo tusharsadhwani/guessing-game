@@ -4,8 +4,10 @@ import 'package:flutter/material.dart';
 import '../../constants/message_type.dart';
 
 class GameScreen extends StatefulWidget {
-  final String roomID;
-  GameScreen(this.roomID);
+  final String roomId;
+  final String memberId;
+
+  GameScreen(this.roomId, this.memberId);
 
   @override
   _GameScreenState createState() => _GameScreenState();
@@ -15,6 +17,22 @@ class _GameScreenState extends State<GameScreen> {
   final _messageController = TextEditingController(text: '');
   var _buttonEnabled = true;
 
+  String _userName;
+
+  @override
+  void initState() {
+    super.initState();
+    Firestore.instance
+        .collection('rooms')
+        .document(widget.roomId)
+        .collection('members')
+        .document(widget.memberId)
+        .get()
+        .then((doc) {
+      _userName = doc.data['name'];
+    });
+  }
+
   void _sendMessage() async {
     setState(() {
       _buttonEnabled = false;
@@ -22,12 +40,13 @@ class _GameScreenState extends State<GameScreen> {
 
     final newMessage = {
       'msgType': MessageType.TEXT,
+      'name': _userName,
       'text': _messageController.text,
       'timestamp': DateTime.now().millisecondsSinceEpoch,
     };
     await Firestore.instance
         .collection('rooms')
-        .document(widget.roomID)
+        .document(widget.roomId)
         .collection('messages')
         .add(newMessage);
 
@@ -48,7 +67,7 @@ class _GameScreenState extends State<GameScreen> {
             child: StreamBuilder<QuerySnapshot>(
               stream: Firestore.instance
                   .collection('rooms')
-                  .document(widget.roomID)
+                  .document(widget.roomId)
                   .collection('messages')
                   .orderBy('timestamp')
                   .snapshots(),
@@ -66,12 +85,19 @@ class _GameScreenState extends State<GameScreen> {
                           case MessageType.TEXT:
                             return ListTile(
                               title: Text(document['text']),
-                              subtitle: Text(document['msgType']),
+                              subtitle: Text(
+                                document['name'],
+                                style: TextStyle(
+                                  color: Theme.of(context).primaryColor,
+                                ),
+                              ),
                             );
                           default:
-                            return ListTile(
-                              title: Text(document['name']),
-                              subtitle: Text(document['msgType']),
+                            return Container(
+                              padding: EdgeInsets.all(8.0),
+                              alignment: Alignment.center,
+                              width: double.infinity,
+                              child: Text(document['msgType']),
                             );
                         }
                       }).toList(),

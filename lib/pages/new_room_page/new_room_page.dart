@@ -77,6 +77,7 @@ class _CreateRoomState extends State<CreateRoom> {
       'msgType': 'ROOM_CREATED',
       'id': adminId,
       'name': adminName,
+      'timestamp': DateTime.now().millisecondsSinceEpoch,
     };
     final roomCode = generateRoomCode();
 
@@ -162,6 +163,7 @@ class _JoinRoomState extends State<JoinRoom> {
       'msgType': 'USER_JOINED',
       'id': userId,
       'name': userName,
+      'timestamp': DateTime.now().millisecondsSinceEpoch,
     };
 
     Firestore.instance

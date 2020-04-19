@@ -24,6 +24,7 @@ class _GameScreenState extends State<GameScreen> {
                   .collection('rooms')
                   .document(widget.roomID)
                   .collection('messages')
+                  .orderBy('timestamp')
                   .snapshots(),
               builder: (BuildContext context,
                   AsyncSnapshot<QuerySnapshot> snapshot) {

@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
+import '../../constants/message_type.dart';
+
 class GameScreen extends StatefulWidget {
   final String roomID;
   GameScreen(this.roomID);
@@ -10,6 +12,30 @@ class GameScreen extends StatefulWidget {
 }
 
 class _GameScreenState extends State<GameScreen> {
+  final _messageController = TextEditingController(text: '');
+  var _buttonEnabled = true;
+
+  void _sendMessage() async {
+    setState(() {
+      _buttonEnabled = false;
+    });
+
+    final newMessage = {
+      'msgType': MessageType.TEXT,
+      'text': _messageController.text,
+      'timestamp': DateTime.now().millisecondsSinceEpoch,
+    };
+    await Firestore.instance
+        .collection('rooms')
+        .document(widget.roomID)
+        .collection('messages')
+        .add(newMessage);
+
+    setState(() {
+      _buttonEnabled = true;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -37,10 +63,18 @@ class _GameScreenState extends State<GameScreen> {
                     return new ListView(
                       children: snapshot.data.documents
                           .map((DocumentSnapshot document) {
-                        return new ListTile(
-                          title: new Text(document['name']),
-                          subtitle: new Text(document['msgType']),
-                        );
+                        switch (document['msgType']) {
+                          case MessageType.TEXT:
+                            return new ListTile(
+                              title: new Text(document['text']),
+                              subtitle: new Text(document['msgType']),
+                            );
+                          default:
+                            return new ListTile(
+                              title: new Text(document['name']),
+                              subtitle: new Text(document['msgType']),
+                            );
+                        }
                       }).toList(),
                     );
                 }
@@ -52,11 +86,15 @@ class _GameScreenState extends State<GameScreen> {
             color: Colors.black.withAlpha(60),
             child: Row(
               children: <Widget>[
-                Expanded(child: TextField()),
+                Expanded(
+                  child: TextField(
+                    controller: _messageController,
+                  ),
+                ),
                 IconButton(
                   color: Colors.red,
                   icon: Icon(Icons.send),
-                  onPressed: () {},
+                  onPressed: _buttonEnabled ? _sendMessage : null,
                 ),
               ],
             ),

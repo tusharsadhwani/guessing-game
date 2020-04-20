@@ -50,6 +50,7 @@ class _GameScreenState extends State<GameScreen> {
         .collection('messages')
         .add(newMessage);
 
+    _messageController.clear();
     setState(() {
       _buttonEnabled = true;
     });

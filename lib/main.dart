@@ -19,8 +19,8 @@ class MyApp extends StatelessWidget {
           textTheme: ButtonTextTheme.accent,
         ),
         textTheme: TextTheme(
-          subhead: TextStyle(color: Colors.white),
-          display1: GoogleFonts.montserrat(),
+          subtitle1: TextStyle(color: Colors.white),
+          headline4: GoogleFonts.montserrat(),
           button: TextStyle(
             color: Colors.white,
           ),

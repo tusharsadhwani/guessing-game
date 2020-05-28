@@ -5,7 +5,7 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final titleStyle = TextStyle(
-      fontFamily: Theme.of(context).textTheme.display1.fontFamily,
+      fontFamily: Theme.of(context).textTheme.headline4.fontFamily,
       color: Colors.white,
       fontSize: 64.0,
     );
